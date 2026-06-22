@@ -16,6 +16,25 @@ public class AuthController {
 
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
+
         return userService.saveUser(user);
+    }
+
+    @PostMapping("/login")
+    public String loginUser(@RequestBody User user) {
+
+
+
+        boolean isValid = userService.loginUser(
+                user.getEmail(),
+                user.getPassword()
+        );
+
+        if (isValid) {
+            return "Login Successful";
+        }
+
+        return "Invalid Email or Password";
+
     }
 }

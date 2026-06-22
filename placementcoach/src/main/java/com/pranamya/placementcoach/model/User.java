@@ -3,6 +3,7 @@ package com.pranamya.placementcoach.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +16,7 @@ public class User {
     private Long id;
 
     private String name;
+    @Column(unique = true)
     private String email;
     private String password;
     private String role;

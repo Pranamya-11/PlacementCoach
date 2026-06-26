@@ -2,6 +2,7 @@ package com.pranamya.placementcoach.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "profiles")
 public class Profile {
@@ -22,7 +23,18 @@ public class Profile {
 
     private String resumeLink;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     public Profile() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

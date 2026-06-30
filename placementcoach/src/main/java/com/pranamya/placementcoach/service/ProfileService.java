@@ -2,6 +2,7 @@ package com.pranamya.placementcoach.service;
 
 import com.pranamya.placementcoach.model.Profile;
 import com.pranamya.placementcoach.repository.ProfileRepository;
+import com.pranamya.placementcoach.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -9,13 +10,15 @@ import java.util.List;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
 
     public ProfileService(
-            ProfileRepository profileRepository
+            ProfileRepository profileRepository,
+            UserRepository userRepository
     ) {
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
     }
-
     public Profile saveProfile(
             Profile profile
     ) {

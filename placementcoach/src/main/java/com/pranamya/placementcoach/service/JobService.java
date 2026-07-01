@@ -1,5 +1,6 @@
 package com.pranamya.placementcoach.service;
 
+import com.pranamya.placementcoach.exception.ResourceNotFoundException;
 import com.pranamya.placementcoach.model.Job;
 import com.pranamya.placementcoach.repository.JobRepository;
 
@@ -26,6 +27,6 @@ public class JobService {
     }
     public Job getJobById(Long id) {
         return jobRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
     }
 }

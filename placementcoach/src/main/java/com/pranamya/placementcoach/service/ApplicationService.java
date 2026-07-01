@@ -1,6 +1,8 @@
 
 package com.pranamya.placementcoach.service;
 
+import com.pranamya.placementcoach.exception.DuplicateApplicationException;
+import com.pranamya.placementcoach.exception.ResourceNotFoundException;
 import com.pranamya.placementcoach.model.Application;
 import com.pranamya.placementcoach.model.Job;
 import com.pranamya.placementcoach.model.User;
@@ -35,12 +37,12 @@ import java.util.List;
                 return applicationRepository.findAll();
             }
             public Application getApplicationById(Long id){
-                return applicationRepository.findById(id).orElseThrow(()->new RuntimeException("Application not found"));
+                return applicationRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Application not found"));
             }
             public Application updateApplicationStatus(Long id, String status) {
 
                 Application application = applicationRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Application not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
 
                 application.setStatus(status);
 
@@ -48,11 +50,11 @@ import java.util.List;
             }
             public Application applyForJob(Long jobId, Long userId) {
                 User user = userRepository.findById(userId)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
                 Job job = jobRepository.findById(jobId)
-                        .orElseThrow(() -> new RuntimeException("Job not found"));
+                        .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
                 if (applicationRepository.existsByUserAndJob(user, job)) {
-                    throw new RuntimeException("You have already applied for this job");
+                    throw new DuplicateApplicationException("You have already applied for this job");
                 }
                 Application application = new Application();
                 application.setUser(user);

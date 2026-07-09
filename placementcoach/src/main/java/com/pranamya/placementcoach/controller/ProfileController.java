@@ -17,11 +17,13 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+
     @PostMapping
     public Profile createProfile(
-            @RequestBody Profile profile
+            @RequestBody Profile profile,
+            @RequestParam Long userId
     ) {
-        return profileService.saveProfile(profile);
+        return profileService.saveProfile(profile, userId);
     }
 
     @GetMapping

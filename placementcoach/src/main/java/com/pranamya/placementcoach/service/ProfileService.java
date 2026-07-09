@@ -1,6 +1,8 @@
 package com.pranamya.placementcoach.service;
 
+import com.pranamya.placementcoach.exception.ResourceNotFoundException;
 import com.pranamya.placementcoach.model.Profile;
+import com.pranamya.placementcoach.model.User;
 import com.pranamya.placementcoach.repository.ProfileRepository;
 import com.pranamya.placementcoach.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,12 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
     public Profile saveProfile(
-            Profile profile
+            Profile profile,Long userId
     ) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        profile.setUser(user);
         return profileRepository.save(profile);
     }
     public List<Profile> getAllProfiles() {

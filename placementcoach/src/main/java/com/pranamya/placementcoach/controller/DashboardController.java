@@ -1,13 +1,23 @@
 package com.pranamya.placementcoach.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.pranamya.placementcoach.dto.DashboardResponse;
+import com.pranamya.placementcoach.service.DashboardService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/dashboard")
 public class DashboardController {
 
-    @GetMapping("/api/dashboard")
-    public String dashboard() {
-        return "Welcome to Placement Coach Dashboard";
+    private final DashboardService dashboardService;
+
+    public DashboardController(DashboardService dashboardService) {
+        this.dashboardService = dashboardService;
+    }
+
+    @GetMapping
+    public DashboardResponse getDashboardStats(
+            @RequestParam Long userId
+    ) {
+        return dashboardService.getDashboardStats(userId);
     }
 }

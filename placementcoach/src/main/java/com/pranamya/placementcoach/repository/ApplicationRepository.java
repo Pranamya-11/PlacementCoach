@@ -7,4 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ApplicationRepository extends JpaRepository <Application,Long>{
     boolean existsByUserAndJob(User user, Job job);
+
+    long countByUser(User user);
+
+    long countByUserAndStatus(User user, String status);
 }

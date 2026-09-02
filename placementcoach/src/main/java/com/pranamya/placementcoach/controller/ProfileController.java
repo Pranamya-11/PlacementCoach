@@ -26,6 +26,12 @@ public class ProfileController {
         return profileService.saveProfile(profile, userId);
     }
 
+    @GetMapping("/user/{userId}")
+    public Profile getProfileByUserId(
+            @PathVariable Long userId
+    ) {
+        return profileService.getProfileByUserId(userId);
+    }
     @GetMapping
     public List<Profile> getAllProfiles() {
         return profileService.getAllProfiles();

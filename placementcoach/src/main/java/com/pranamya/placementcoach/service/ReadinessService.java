@@ -26,15 +26,18 @@ public class ReadinessService {
         this.applicationRepository = applicationRepository;
     }
 
-    public ReadinessResponse calculateReadiness(Long userId) {
+    public ReadinessResponse calculateReadiness(String email) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
         Profile profile = profileRepository.findByUser(user)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
 
-        long applications = applicationRepository.countByUser(user);
+        long applications =
+                applicationRepository.countByUser(user);
 
         int score = 0;
 

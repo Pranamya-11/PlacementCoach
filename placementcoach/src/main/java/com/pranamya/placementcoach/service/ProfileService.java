@@ -21,18 +21,36 @@ public class ProfileService {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
     }
+
     public Profile saveProfile(
-            Profile profile,Long userId
+            Profile profile,
+            Long userId
     ) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
         profile.setUser(user);
+
         return profileRepository.save(profile);
     }
+
     public List<Profile> getAllProfiles() {
         return profileRepository.findAll();
     }
+
+    // NEW
+    public Profile getProfileByUserId(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        return profileRepository.findByUser(user)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Profile not found"));
+    }
+
     public Profile updateProfile(
             Long id,
             Profile profile
@@ -53,8 +71,6 @@ public class ProfileService {
                 profile.getResumeLink()
         );
 
-        return profileRepository.save(
-                existingProfile
-        );
+        return profileRepository.save(existingProfile);
     }
 }

@@ -26,10 +26,15 @@ public class JobController {
      public List<Job> getAllJobs(){
         return jobService.getAllJobs();
      }
+    @GetMapping("/upcoming")
+    public List<Job> getUpcomingJobs() {
+        return jobService.getUpcomingJobs();
+    }
      @GetMapping("/{id}")
      public Job getJobById(@PathVariable Long id){
         return jobService.getJobById(id);
      }
+
 
 
 }

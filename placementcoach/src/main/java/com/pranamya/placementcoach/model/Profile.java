@@ -1,6 +1,7 @@
 package com.pranamya.placementcoach.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -25,6 +26,7 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     public Profile() {
     }

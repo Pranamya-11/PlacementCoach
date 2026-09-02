@@ -2,6 +2,7 @@ package com.pranamya.placementcoach.controller;
 
 import com.pranamya.placementcoach.dto.ReadinessResponse;
 import com.pranamya.placementcoach.service.ReadinessService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +15,13 @@ public class ReadinessController {
         this.readinessService = readinessService;
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public ReadinessResponse getReadiness(
-            @RequestParam Long userId
+            Authentication authentication
     ) {
-        return readinessService.calculateReadiness(userId);
+
+        String email = authentication.getName();
+
+        return readinessService.calculateReadiness(email);
     }
 }

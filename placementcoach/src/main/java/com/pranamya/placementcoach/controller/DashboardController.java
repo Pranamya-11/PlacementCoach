@@ -2,6 +2,7 @@ package com.pranamya.placementcoach.controller;
 
 import com.pranamya.placementcoach.dto.DashboardResponse;
 import com.pranamya.placementcoach.service.DashboardService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +15,13 @@ public class DashboardController {
         this.dashboardService = dashboardService;
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public DashboardResponse getDashboardStats(
-            @RequestParam Long userId
+            Authentication authentication
     ) {
-        return dashboardService.getDashboardStats(userId);
+
+        String email = authentication.getName();
+
+        return dashboardService.getDashboardStats(email);
     }
 }

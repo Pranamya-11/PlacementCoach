@@ -1,3 +1,4 @@
+
 package com.pranamya.placementcoach.service;
 
 import com.pranamya.placementcoach.exception.ResourceNotFoundException;
@@ -6,7 +7,6 @@ import com.pranamya.placementcoach.model.User;
 import com.pranamya.placementcoach.repository.ProfileRepository;
 import com.pranamya.placementcoach.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class ProfileService {
@@ -22,27 +22,9 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
-    public Profile saveProfile(
-            Profile profile,
-            Long userId
-    ) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found"));
+    public Profile getProfileByEmail(String email) {
 
-        profile.setUser(user);
-
-        return profileRepository.save(profile);
-    }
-
-    public List<Profile> getAllProfiles() {
-        return profileRepository.findAll();
-    }
-
-    // NEW
-    public Profile getProfileByUserId(Long userId) {
-
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
 
@@ -51,25 +33,22 @@ public class ProfileService {
                         new ResourceNotFoundException("Profile not found"));
     }
 
-    public Profile updateProfile(
-            Long id,
-            Profile profile
-    ) {
+    public Profile saveProfile(Profile profile, String email) {
 
-        Profile existingProfile =
-                profileRepository.findById(id)
-                        .orElseThrow();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
 
+        Profile existingProfile = profileRepository.findByUser(user)
+                .orElse(new Profile());
+
+        existingProfile.setUser(user);
         existingProfile.setUsn(profile.getUsn());
         existingProfile.setBranch(profile.getBranch());
         existingProfile.setCgpa(profile.getCgpa());
         existingProfile.setSkills(profile.getSkills());
-        existingProfile.setLeetcodeCount(
-                profile.getLeetcodeCount()
-        );
-        existingProfile.setResumeLink(
-                profile.getResumeLink()
-        );
+        existingProfile.setLeetcodeCount(profile.getLeetcodeCount());
+        existingProfile.setResumeLink(profile.getResumeLink());
 
         return profileRepository.save(existingProfile);
     }

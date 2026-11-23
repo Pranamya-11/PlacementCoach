@@ -1,9 +1,11 @@
+
 package com.pranamya.placementcoach.controller;
 
 import com.pranamya.placementcoach.model.Profile;
 import com.pranamya.placementcoach.service.ProfileService;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -11,39 +13,35 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    public ProfileController(
-            ProfileService profileService
-    ) {
+    public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
 
+    @GetMapping("/me")
+    public Profile getMyProfile(Authentication authentication) {
 
-    @PostMapping
-    public Profile createProfile(
+        String email = authentication.getName();
+
+        return profileService.getProfileByEmail(email);
+    }
+
+    @PostMapping("/me")
+    public Profile createOrUpdateProfile(
             @RequestBody Profile profile,
-            @RequestParam Long userId
+            Authentication authentication
     ) {
-        return profileService.saveProfile(profile, userId);
+        String email = authentication.getName();
+
+        return profileService.saveProfile(profile, email);
     }
 
-    @GetMapping("/user/{userId}")
-    public Profile getProfileByUserId(
-            @PathVariable Long userId
+    @PutMapping("/me")
+    public Profile updateMyProfile(
+            @RequestBody Profile profile,
+            Authentication authentication
     ) {
-        return profileService.getProfileByUserId(userId);
-    }
-    @GetMapping
-    public List<Profile> getAllProfiles() {
-        return profileService.getAllProfiles();
-    }
-    @PutMapping("/{id}")
-    public Profile updateProfile(
-            @PathVariable Long id,
-            @RequestBody Profile profile
-    ) {
-        return profileService.updateProfile(
-                id,
-                profile
-        );
+        String email = authentication.getName();
+
+        return profileService.saveProfile(profile, email);
     }
 }

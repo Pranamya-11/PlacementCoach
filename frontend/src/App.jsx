@@ -139,9 +139,9 @@ function App() {
 
         </form>
 
-        <p className="register-text">
-          Don't have an account? <span>Register</span>
-        </p>
+{/*         <p className="register-text"> */}
+{/*           Don't have an account? <span>Register</span> */}
+{/*         </p> */}
 
       </div>
 

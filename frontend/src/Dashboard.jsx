@@ -55,7 +55,7 @@ function Dashboard() {
 
       // Recommendations - still userId=6 for now
       const recommendationResponse = await fetch(
-        "http://localhost:8080/api/recommendations?userId=6",
+        "http://localhost:8080/api/recommendations",
         {
           headers,
         }
@@ -70,7 +70,7 @@ function Dashboard() {
 
       // Recent applications - still userId=6 for now
       const applicationsResponse = await fetch(
-        "http://localhost:8080/api/applications/recent?userId=6",
+        "http://localhost:8080/api/applications/recent",
         {
           headers,
         }

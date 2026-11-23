@@ -1,3 +1,4 @@
+
 package com.pranamya.placementcoach.service;
 
 import com.pranamya.placementcoach.dto.RecentApplicationResponse;
@@ -9,6 +10,7 @@ import com.pranamya.placementcoach.model.User;
 import com.pranamya.placementcoach.repository.ApplicationRepository;
 import com.pranamya.placementcoach.repository.JobRepository;
 import com.pranamya.placementcoach.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,31 +33,48 @@ public class ApplicationService {
         this.jobRepository = jobRepository;
     }
 
+    // Save a new application
     public Application saveApplication(Application application) {
         return applicationRepository.save(application);
     }
 
+    // Get all applications
     public List<Application> getAllApplications() {
         return applicationRepository.findAll();
     }
 
-    public Application getApplicationById(Long id) {
-        return applicationRepository.findById(id)
+    // Get applications belonging to a particular user
+    public List<Application> getApplicationsByUserId(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
+
+        return applicationRepository.findByUser(user);
+    }
+
+    // Get application by ID and verify its owner
+    public Application getApplicationByIdAndUserId(
+            Long id, Long userId) {
+
+        return applicationRepository.findByIdAndUser_Id(id, userId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Application not found"));
     }
 
-    public Application updateApplicationStatus(Long id, String status) {
+    // Update application status only for the owner
+    public Application updateApplicationStatus(
+            Long id, String status, Long userId) {
 
-        Application application = applicationRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Application not found"));
+        Application application =
+                getApplicationByIdAndUserId(id, userId);
 
         application.setStatus(status);
 
         return applicationRepository.save(application);
     }
 
+    // Apply for a job
     public Application applyForJob(Long jobId, Long userId) {
 
         User user = userRepository.findById(userId)
@@ -82,8 +101,9 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    // Get applications belonging to a particular user
-    public List<RecentApplicationResponse> getRecentApplications(Long userId) {
+    // Get recent applications belonging to a user
+    public List<RecentApplicationResponse> getRecentApplications(
+            Long userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import "./Jobs.css";
 
@@ -5,8 +6,6 @@ function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  const userId = 6;
 
   useEffect(() => {
     fetchJobs();
@@ -43,7 +42,7 @@ function Jobs() {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:8080/api/applications/jobs/${jobId}/apply?userId=${userId}`,
+        `http://localhost:8080/api/applications/jobs/${jobId}/apply`,
         {
           method: "POST",
           headers: {
@@ -110,29 +109,17 @@ function Jobs() {
 
                 <h3>{job.role}</h3>
 
-                <p>
-                  📍 {job.location}
-                </p>
+                <p>📍 {job.location}</p>
 
-                <p>
-                  💰 {job.salaryPackage} LPA
-                </p>
+                <p>💰 {job.salaryPackage} LPA</p>
 
-                <p>
-                  🎓 Minimum CGPA: {job.minimumCgpa}
-                </p>
+                <p>🎓 Minimum CGPA: {job.minimumCgpa}</p>
 
-                <p>
-                  🛠 Skills: {job.requiredSkills}
-                </p>
+                <p>🛠 Skills: {job.requiredSkills}</p>
 
-                <p>
-                  📅 Deadline: {job.deadline}
-                </p>
+                <p>📅 Deadline: {job.deadline}</p>
 
-                <p>
-                  {job.description}
-                </p>
+                <p>{job.description}</p>
 
               </div>
 

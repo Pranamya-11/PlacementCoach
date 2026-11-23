@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import "./Applications.css";
 
@@ -5,15 +6,13 @@ function Applications() {
   const [applications, setApplications] = useState([]);
   const [error, setError] = useState("");
 
-  const userId = 6;
-
   useEffect(() => {
     const fetchApplications = async () => {
       try {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `http://localhost:8080/api/applications/recent?userId=${userId}`,
+          "http://localhost:8080/api/applications/recent",
           {
             method: "GET",
             headers: {
@@ -43,72 +42,39 @@ function Applications() {
 
   return (
     <div className="applications-page">
-
       <div className="applications-header">
         <h1>My Applications</h1>
-
-        <p>
-          Track the jobs you have applied for.
-        </p>
+        <p>Track the jobs you have applied for.</p>
       </div>
 
       <main className="applications-container">
-
         {applications.length === 0 ? (
-
           <div className="empty-applications">
             <h2>No applications yet</h2>
-
-            <p>
-              Apply to jobs to start tracking your applications.
-            </p>
+            <p>Apply to jobs to start tracking your applications.</p>
           </div>
-
         ) : (
-
-          applications.map((application, index) => (
-
+          applications.map((application) => (
             <div
               className="application-full-card"
-              key={index}
+              key={application.id}
             >
-
               <div className="application-details">
-
-                <h2>
-                  {application.company}
-                </h2>
-
-                <h3>
-                  {application.role}
-                </h3>
-
-                <p>
-                  📅 Applied: {application.appliedDate}
-                </p>
-
+                <h2>{application.company}</h2>
+                <h3>{application.role}</h3>
+                <p>📅 Applied: {application.appliedDate}</p>
               </div>
 
               <div className="status-section">
-
-                <span className="status-label">
-                  Status
-                </span>
-
+                <span className="status-label">Status</span>
                 <span className="status">
                   {application.status}
                 </span>
-
               </div>
-
             </div>
-
           ))
-
         )}
-
       </main>
-
     </div>
   );
 }
